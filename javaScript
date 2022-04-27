@@ -23,14 +23,31 @@ description,
 category
 
 }
+axios.post("https://crudcrud.com/api/9e9d56f6fe804dc796ecf5f45dc6bfee/expensetracker", obj)
+.then((response) =>{
+showNewUserOnScreen(response.data)
+console.log(response)
+}).catch((err) =>{
+console.log(err)
+})
+//localStorage.setItem(obj.description, JSON.stringify(obj))
 
-localStorage.setItem(obj.description, JSON.stringify(obj))
-
-showNewUserOnScreen(obj)
+//showNewUserOnScreen(obj)
 
 }
 window.addEventListener("DOMContentLoaded",()=>{
-const localStorageObj = localStorage;
+const data = axios.get("https://crudcrud.com/api/9e9d56f6fe804dc796ecf5f45dc6bfee/expensetracker")
+.then((response) =>{
+//console.log(response)
+for(var i=0; i<response.data.length; i++){
+showNewUserOnScreen(response.data[i])
+}
+})
+.catch((err)=>{
+console.log(err)
+})
+console.log(data)
+/**const localStorageObj = localStorage;
 const localstoragekeys = Object.keys(localStorageObj)
 
 for(var i =0; i<localstoragekeys.length; i++){
@@ -38,7 +55,7 @@ const key = localstoragekeys[i]
 const userDetailsString = localStorageObj[key];
 const userDetailsObj = JSON.parse(userDetailsString);
 showNewUserOnScreen(userDetailsObj)
-}
+}**/
 });
 
 function showNewUserOnScreen(user){
@@ -52,34 +69,41 @@ removeUserFromScreen(user.description);
 
 const parentNode = document.getElementById('listOfUsers');
 
-const childHTML = `<li id =${user.description}>${user.expensetracker} - ${user.description} -${user.category} <button onclick= deleteUser('${user.description}')>Delete User</button>
-<button onclick = editUserDetails('${user.description}','${user.expensetracker}','${user.category}')>Edit user</button>
+const childHTML = `<li id =${user._id}>${user.expensetracker} - ${user.description} -${user.category} <button onclick= deleteUser('${user._id}')>Delete User</button>
+<button onclick = editUserDetails('${user.description}','${user.expensetracker}','${user.category}','${user._id}')>Edit user</button>
 </li>`
 
 parentNode.innerHTML = parentNode.innerHTML + childHTML;
 
 }
 
-function editUserDetails(description,expensetracker,category)
+function editUserDetails(description,expensetracker,category, userId)
 {
 document.getElementById('description').value = description;
 document.getElementById('expensetracker').value = expensetracker;
 document.getElementById('myList').value = category;
 
-deleteUser(description)
+deleteUser(userId)
 }
 
 
-function deleteUser(description)
+function deleteUser(userId)
 {
-console.log(description)
+axios.delete(`https://crudcrud.com/api/9e9d56f6fe804dc796ecf5f45dc6bfee/expensetracker/${userId}`)
+.then((response)=>{
+removeUserFromScreen(userId)
+})
+.catch((err)=>{
+console.log(err)
+})
+/**console.log(description)
 localStorage.removeItem(description);
-removeUserFromScreen(description);
+removeUserFromScreen(description);**/
 }
-function removeUserFromScreen(description)
+function removeUserFromScreen(userId)
 {
 const parentNode = document.getElementById('listOfUsers');
-const childNodeToBeDeleted = document.getElementById(description)
+const childNodeToBeDeleted = document.getElementById(userId)
 if(childNodeToBeDeleted) {
 parentNode.removeChild(childNodeToBeDeleted)
 }
