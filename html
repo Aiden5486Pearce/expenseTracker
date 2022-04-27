@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device=width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css"
+
+</head>
+
+<body>
+
+<form onsubmit="storeData(event)">
+
+<label>Choose expensetracker</label>
+
+<input id="expensetracker" type="text" name="expensetracker" required/>
+
+<br><br>
+
+<label>Choose description</label>
+
+<input id="description" type="text" name="description" required>
+
+<br><br>
+
+<label>Choose a category</label>
+
+<select id="myList" name="category" onchange="favTutorial()">
+
+<option>fuel</option>
+
+<option>food</option>
+
+<option>movie</option>
+
+<option>electricity</option>
+
+</select>
+
+<button>
+
+Add Expenses
+
+</button>
+
+</form>
+
+<ul id='listOfUsers'></ul>
+
+</body>
+
+</html>
