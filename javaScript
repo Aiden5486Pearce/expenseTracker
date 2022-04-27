@@ -1,0 +1,86 @@
+function favTutorial(){
+
+var mylist = document.getElementById("myList");
+
+}
+
+function storeData(event){
+
+event.preventDefault();
+
+const expensetracker = event.target.expensetracker.value;
+
+const description = event.target.description.value;
+
+const category = event.target.category.value;
+
+const obj={
+
+expensetracker,
+
+description,
+
+category
+
+}
+
+localStorage.setItem(obj.description, JSON.stringify(obj))
+
+showNewUserOnScreen(obj)
+
+}
+window.addEventListener("DOMContentLoaded",()=>{
+const localStorageObj = localStorage;
+const localstoragekeys = Object.keys(localStorageObj)
+
+for(var i =0; i<localstoragekeys.length; i++){
+const key = localstoragekeys[i]
+const userDetailsString = localStorageObj[key];
+const userDetailsObj = JSON.parse(userDetailsString);
+showNewUserOnScreen(userDetailsObj)
+}
+});
+
+function showNewUserOnScreen(user){
+document.getElementById('description').value ='';
+document.getElementById('expensetracker').value ='';
+document.getElementById('myList').value ='';
+
+if(localStorage.getItem(user.description)!==null){
+removeUserFromScreen(user.description);
+}
+
+const parentNode = document.getElementById('listOfUsers');
+
+const childHTML = `<li id =${user.description}>${user.expensetracker} - ${user.description} -${user.category} <button onclick= deleteUser('${user.description}')>Delete User</button>
+<button onclick = editUserDetails('${user.description}','${user.expensetracker}','${user.category}')>Edit user</button>
+</li>`
+
+parentNode.innerHTML = parentNode.innerHTML + childHTML;
+
+}
+
+function editUserDetails(description,expensetracker,category)
+{
+document.getElementById('description').value = description;
+document.getElementById('expensetracker').value = expensetracker;
+document.getElementById('myList').value = category;
+
+deleteUser(description)
+}
+
+
+function deleteUser(description)
+{
+console.log(description)
+localStorage.removeItem(description);
+removeUserFromScreen(description);
+}
+function removeUserFromScreen(description)
+{
+const parentNode = document.getElementById('listOfUsers');
+const childNodeToBeDeleted = document.getElementById(description)
+if(childNodeToBeDeleted) {
+parentNode.removeChild(childNodeToBeDeleted)
+}
+}
